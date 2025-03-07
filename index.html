@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Webpage</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Add the CSS styles here (from the previous example) */
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="logo.png" alt="Logo">
+      <h1>My Webpage</h1>
+    </div>
+    <div class="cart-icon">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-count">0</span>
+    </div>
+  </header>
+
+  <!-- Popup Modal -->
+  <div id="popup-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <img id="modal-image" src="" alt="Selected Image">
+      <p id="modal-name"></p>
+      <p id="modal-price"></p>
+      <label for="quantity">Quantity:</label>
+      <select id="quantity">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      <p id="total-price"></p>
+      <button id="buy-button">Buy</button>
+    </div>
+  </div>
+
+  <!-- Cart Items Modal -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Cart Items</h2>
+      <ul id="cart-items"></ul>
+    </div>
+  </div>
+
+  <!-- Section 1: Sliding Images -->
+  <section class="slider-section">
+    <div class="slider">
+      <img src="slide1.jpg" alt="Slide 1">
+      <img src="slide2.jpg" alt="Slide 2">
+      <img src="slide3.jpg" alt="Slide 3">
+    </div>
+  </section>
+
+  <!-- Section 2: Rectangular Image and Grid -->
+  <section class="section-2">
+    <div class="rectangular-image">
+      <img src="rect-image.jpg" alt="Rectangular Image">
+      <div class="image-info">
+        <h3>Premium Watch</h3>
+        <p>$199.99</p>
+      </div>
+    </div>
+    <div class="grid-images">
+      <div class="grid-item">
+        <img src="grid1.jpg" alt="Grid 1">
+        <div class="image-info">
+          <h3>Wireless Headphones</h3>
+          <p>$49.99</p>
+        </div>
+        <button class="add-to-cart" data-price="49.99" data-image="grid1.jpg" data-name="Wireless Headphones">Add to Cart</button>
+      </div>
+      <div class="grid-item">
+        <img src="grid2.jpg" alt="Grid 2">
+        <div class="image-info">
+          <h3>Smartphone</h3>
+          <p>$299.99</p>
+        </div>
+        <button class="add-to-cart" data-price="299.99" data-image="grid2.jpg" data-name="Smartphone">Add to Cart</button>
+      </div>
+      <div class="grid-item">
+        <img src="grid3.jpg" alt="Grid 3">
+        <div class="image-info">
+          <h3>Laptop</h3>
+          <p>$899.99</p>
+        </div>
+        <button class="add-to-cart" data-price="899.99" data-image="grid3.jpg" data-name="Laptop">Add to Cart</button>
+      </div>
+      <div class="grid-item">
+        <img src="grid4.jpg" alt="Grid 4">
+        <div class="image-info">
+          <h3>Tablet</h3>
+          <p>$399.99</p>
+        </div>
+        <button class="add-to-cart" data-price="399.99" data-image="grid4.jpg" data-name="Tablet">Add to Cart</button>
+      </div>
+      <div class="grid-item">
+        <img src="grid5.jpg" alt="Grid 5">
+        <div class="image-info">
+          <h3>Smartwatch</h3>
+          <p>$149.99</p>
+        </div>
+        <button class="add-to-cart" data-price="149.99" data-image="grid5.jpg" data-name="Smartwatch">Add to Cart</button>
+      </div>
+      <div class="grid-item">
+        <img src="grid6.jpg" alt="Grid 6">
+        <div class="image-info">
+          <h3>Camera</h3>
+          <p>$499.99</p>
+        </div>
+        <button class="add-to-cart" data-price="499.99" data-image="grid6.jpg" data-name="Camera">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Grid with Prices -->
+  <section class="section-3">
+    <h2>Featured Products</h2>
+    <div class="grid-prices">
+      <div class="item">
+        <img src="item1.jpg" alt="Item 1">
+        <div class="image-info">
+          <h3>Bluetooth Speaker</h3>
+          <p>$29.99</p>
+        </div>
+        <button class="add-to-cart" data-price="29.99" data-image="item1.jpg" data-name="Bluetooth Speaker">Add to Cart</button>
+      </div>
+      <div class="item">
+        <img src="item2.jpg" alt="Item 2">
+        <div class="image-info">
+          <h3>Gaming Mouse</h3>
+          <p>$39.99</p>
+        </div>
+        <button class="add-to-cart" data-price="39.99" data-image="item2.jpg" data-name="Gaming Mouse">Add to Cart</button>
+      </div>
+      <div class="item">
+        <img src="item3.jpg" alt="Item 3">
+        <div class="image-info">
+          <h3>Keyboard</h3>
+          <p>$49.99</p>
+        </div>
+        <button class="add-to-cart" data-price="49.99" data-image="item3.jpg" data-name="Keyboard">Add to Cart</button>
+      </div>
+      <div class="item">
+        <img src="item4.jpg" alt="Item 4">
+        <div class="image-info">
+          <h3>Monitor</h3>
+          <p>$199.99</p>
+        </div>
+        <button class="add-to-cart" data-price="199.99" data-image="item4.jpg" data-name="Monitor">Add to Cart</button>
+      </div>
+      <div class="item">
+        <img src="item5.jpg" alt="Item 5">
+        <div class="image-info">
+          <h3>Printer</h3>
+          <p>$99.99</p>
+        </div>
+        <button class="add-to-cart" data-price="99.99" data-image="item5.jpg" data-name="Printer">Add to Cart</button>
+      </div>
+      <div class="item">
+        <img src="item6.jpg" alt="Item 6">
+        <div class="image-info">
+          <h3>External Hard Drive</h3>
+          <p>$79.99</p>
+        </div>
+        <button class="add-to-cart" data-price="79.99" data-image="item6.jpg" data-name="External Hard Drive">Add to Cart</button>
+      </div>
+      <div class="item">
+        <img src="item7.jpg" alt="Item 7">
+        <div class="image-info">
+          <h3>USB Flash Drive</h3>
+          <p>$19.99</p>
+        </div>
+        <button class="add-to-cart" data-price="19.99" data-image="item7.jpg" data-name="USB Flash Drive">Add to Cart</button>
+      </div>
+      <div class="item">
+        <img src="item8.jpg" alt="Item 8">
+        <div class="image-info">
+          <h3>Wireless Router</h3>
+          <p>$59.99</p>
+        </div>
+        <button class="add-to-cart" data-price="59.99" data-image="item8.jpg" data-name="Wireless Router">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Navigation -->
+  <footer>
+    <div class="nav-icons">
+      <a href="index.html"><i class="fas fa-home"></i></a>
+      <a href="categories.html"><i class="fas fa-th-large"></i></a>
+      <a href="#"><i class="fas fa-user"></i></a>
+    </div>
+  </footer>
+
+  <script>
+    // JavaScript code will go here
+  </script>
+</body>
+</html>
+
+<style>
+    /* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.cart-icon i {
+  font-size: 24px;
+}
+
+.cart-count {
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+}
+
+.close {
+  cursor: pointer;
+  float: right;
+  font-size: 24px;
+}
+
+#modal-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+#modal-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+#modal-price {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+#quantity {
+  margin: 10px 0;
+  padding: 5px;
+}
+
+#total-price {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+#buy-button {
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Cart Modal */
+#cart-items {
+  list-style: none;
+  padding: 0;
+}
+
+#cart-items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+#cart-items img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Image Info */
+.image-info {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.image-info h3 {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.image-info p {
+  font-size: 14px;
+  color: #333;
+  margin: 5px 0;
+}
+
+/* Section 2: Rectangular Image and Grid */
+.section-2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px;
+}
+
+.rectangular-image {
+  flex: 1;
+  position: relative;
+}
+
+.rectangular-image img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.rectangular-image .image-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.grid-images {
+  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.grid-item {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.grid-item button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Section 3: Grid with Prices */
+.section-3 {
+  margin: 20px;
+}
+
+.grid-prices {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.item {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.item button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.nav-icons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav-icons i {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grid-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-prices {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-images {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-prices {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script>
+    const modal = document.getElementById("popup-modal");
+const cartModal = document.getElementById("cart-modal");
+const closeButtons = document.querySelectorAll(".close");
+const quantitySelect = document.getElementById("quantity");
+const totalPriceDisplay = document.getElementById("total-price");
+const buyButton = document.getElementById("buy-button");
+const cartIcon = document.querySelector(".cart-icon");
+const cartCount = document.querySelector(".cart-count");
+const cartItemsList = document.getElementById("cart-items");
+
+let selectedItem = null;
+let cart = [];
+
+// Open popup modal when "Add to Cart" is clicked
+document.querySelectorAll(".add-to-cart").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedItem = {
+      image: button.getAttribute("data-image"),
+      name: button.getAttribute("data-name"),
+      price: parseFloat(button.getAttribute("data-price")),
+    };
+    document.getElementById("modal-image").src = selectedItem.image;
+    document.getElementById("modal-name").textContent = selectedItem.name;
+    document.getElementById("modal-price").textContent = `Price: $${selectedItem.price}`;
+    updateTotalPrice();
+    modal.style.display = "flex";
+  });
+});
+
+// Update total price when quantity changes
+quantitySelect.addEventListener("change", updateTotalPrice);
+
+function updateTotalPrice() {
+  const quantity = parseInt(quantitySelect.value);
+  const totalPrice = selectedItem.price * quantity;
+  totalPriceDisplay.textContent = `Total: $${totalPrice.toFixed(2)}`;
+}
+
+// Add item to cart when "Buy" is clicked
+buyButton.addEventListener("click", () => {
+  const quantity = parseInt(quantitySelect.value);
+  const item = {
+    image: selectedItem.image,
+    name: selectedItem.name,
+    price: selectedItem.price,
+    quantity: quantity,
+    total: selectedItem.price * quantity,
+  };
+  cart.push(item);
+  updateCartCount();
+  modal.style.display = "none";
+});
+
+// Open cart modal when cart icon is clicked
+cartIcon.addEventListener("click", () => {
+  updateCartItems();
+  cartModal.style.display = "flex";
+});
+
+// Close modals when close button is clicked
+closeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    modal.style.display = "none";
+    cartModal.style.display = "none";
+  });
+});
+
+// Update cart count
+function updateCartCount() {
+  cartCount.textContent = cart.length;
+}
+
+// Update cart items list
+function updateCartItems() {
+  cartItemsList.innerHTML = cart
+    .map(
+      (item) => `
+      <li>
+        <img src="${item.image}" alt="Cart Item">
+        <span>${item.name}</span>
+        <span>Qty: ${item.quantity}</span>
+        <span>$${item.total.toFixed(2)}</span>
+      </li>
+    `
+    )
+    .join("");
+}
+</script>
