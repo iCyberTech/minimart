@@ -210,6 +210,22 @@
             border-radius: 5px;
         }
 
+        #cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #proceed-button {
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
         /* Product Grid */
         .product-grid {
             display: grid;
@@ -359,6 +375,8 @@
             <span class="close">&times;</span>
             <h2>Your Cart</h2>
             <ul id="cart-items"></ul>
+            <p id="cart-total"></p>
+            <button id="proceed-button">Proceed to Checkout</button>
         </div>
     </div>
 
@@ -371,6 +389,13 @@
         </div>
     </footer>
 
+    <!-- Include EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your EmailJS user ID
+    </script>
+
     <script>
         // JavaScript for Modal and Cart Functionality
         const modal = document.getElementById("popup-modal");
@@ -382,6 +407,8 @@
         const cartIcon = document.querySelector(".cart-icon");
         const cartCount = document.querySelector(".cart-count");
         const cartItemsList = document.getElementById("cart-items");
+        const cartTotal = document.getElementById("cart-total");
+        const proceedButton = document.getElementById("proceed-button");
         let selectedItem = null;
         let cart = [];
 
@@ -422,6 +449,7 @@
             };
             cart.push(item);
             updateCartCount();
+            updateCartTotal();
             modal.style.display = "none";
         });
 
@@ -444,7 +472,7 @@
             cartCount.textContent = cart.length;
         }
 
-        // Update cart items list
+        // Update cart items list and total price
         function updateCartItems() {
             cartItemsList.innerHTML = cart
                 .map(
@@ -458,7 +486,41 @@
                 `
                 )
                 .join("");
+            updateCartTotal();
         }
+
+        // Calculate and display the total price of all items in the cart
+        function updateCartTotal() {
+            const total = cart.reduce((sum, item) => sum + item.total, 0);
+            cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        // Send email with cart details
+        proceedButton.addEventListener("click", () => {
+            const cartDetails = cart
+                .map(
+                    (item) => `
+                    ${item.name} - Qty: ${item.quantity} - Price: $${item.total.toFixed(2)}
+                `
+                )
+                .join("\n");
+
+            const totalPrice = cart.reduce((sum, item) => sum + item.total, 0);
+
+            const emailParams = {
+                cart_details: cartDetails,
+                total_price: `$${totalPrice.toFixed(2)}`,
+            };
+
+            emailjs.send("YOUR_EMAILJS_SERVICE_ID", "YOUR_EMAILJS_TEMPLATE_ID", emailParams)
+                .then(() => {
+                    alert("Order details sent successfully!");
+                })
+                .catch((error) => {
+                    alert("Failed to send order details. Please try again.");
+                    console.error("EmailJS Error:", error);
+                });
+        });
     </script>
 </body>
 </html>
