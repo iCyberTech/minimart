@@ -393,7 +393,34 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
         // Initialize EmailJS
-        emailjs.init("service_d92kjhz"); // Replace with your EmailJS user ID
+emailjs.init("YOUR_EMAILJS_USER_ID");
+
+// Send email with cart details
+proceedButton.addEventListener("click", () => {
+    const cartDetails = cart
+        .map(
+            (item) => `
+            ${item.name} - Qty: ${item.quantity} - Price: $${item.total.toFixed(2)}
+        `
+        )
+        .join("\n");
+
+    const totalPrice = cart.reduce((sum, item) => sum + item.total, 0);
+
+    const emailParams = {
+        cart_details: cartDetails,
+        total_price: `$${totalPrice.toFixed(2)}`,
+    };
+
+    emailjs.send("YOUR_EMAILJS_SERVICE_ID", "YOUR_EMAILJS_TEMPLATE_ID", emailParams)
+        .then(() => {
+            alert("Order details sent successfully!");
+        })
+        .catch((error) => {
+            alert("Failed to send order details. Please try again.");
+            console.error("EmailJS Error:", error);
+        });
+});
     </script>
 
     <script>
