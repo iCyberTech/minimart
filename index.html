@@ -5,35 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My E-Commerce Site</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Include Firebase SDK -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD5_fJHFW-4HQjETLJtJ4rD73h3M1zllr0",
-            authDomain: "minimart-52e7c.firebaseapp.com",
-            projectId: "minimart-52e7c",
-            storageBucket: "minimart-52e7c.appspot.com",
-            messagingSenderId: "869234813362",
-            appId: "1:869234813362:web:df55e8023e052787fa5cab",
-            measurementId: "G-MPF2P7JVZ4"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Check authentication state
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                // Redirect to login page if user is not signed in
-                window.location.href = "login.html";
-            }
-        });
-    </script>
     <style>
         /* General Styles */
         body {
@@ -322,6 +293,45 @@
             font-size: 24px;
             cursor: pointer;
         }
+
+        /* Sign-Up Form */
+        #signup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #signup-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        #signup-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #signup-form button {
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -332,8 +342,8 @@
             <h1>My E-Commerce Site</h1>
         </div>
         <div class="auth-links">
-            <a href="signup.html">Sign Up</a>
-            <a href="login.html">Sign In</a>
+            <a href="#" id="signup-link">Sign Up</a>
+            <a href="#" id="login-link">Sign In</a>
         </div>
         <div class="cart-icon">
             <i class="fas fa-shopping-cart"></i>
@@ -377,83 +387,7 @@
             <button class="add-to-cart" data-image="image4.jpg" data-name="Product 4" data-price="25.00">Add to Cart</button>
         </div>
     </div>
-<div class="product-grid">
-        <div class="product-card">
-            <img src="image1.jpg" alt="Product 1">
-            <h3>Product 1</h3>
-            <p>$10.00</p>
-            <button class="add-to-cart" data-image="image1.jpg" data-name="Product 1" data-price="10.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image2.jpg" alt="Product 2">
-            <h3>Product 2</h3>
-            <p>$15.00</p>
-            <button class="add-to-cart" data-image="image2.jpg" data-name="Product 2" data-price="15.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image3.jpg" alt="Product 3">
-            <h3>Product 3</h3>
-            <p>$20.00</p>
-            <button class="add-to-cart" data-image="image3.jpg" data-name="Product 3" data-price="20.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image4.jpg" alt="Product 4">
-            <h3>Product 4</h3>
-            <p>$25.00</p>
-            <button class="add-to-cart" data-image="image4.jpg" data-name="Product 4" data-price="25.00">Add to Cart</button>
-        </div>
-    </div>
-    <div class="product-grid">
-        <div class="product-card">
-            <img src="image1.jpg" alt="Product 1">
-            <h3>Product 1</h3>
-            <p>$10.00</p>
-            <button class="add-to-cart" data-image="image1.jpg" data-name="Product 1" data-price="10.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image2.jpg" alt="Product 2">
-            <h3>Product 2</h3>
-            <p>$15.00</p>
-            <button class="add-to-cart" data-image="image2.jpg" data-name="Product 2" data-price="15.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image3.jpg" alt="Product 3">
-            <h3>Product 3</h3>
-            <p>$20.00</p>
-            <button class="add-to-cart" data-image="image3.jpg" data-name="Product 3" data-price="20.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image4.jpg" alt="Product 4">
-            <h3>Product 4</h3>
-            <p>$25.00</p>
-            <button class="add-to-cart" data-image="image4.jpg" data-name="Product 4" data-price="25.00">Add to Cart</button>
-        </div>
-    </div><div class="product-grid">
-        <div class="product-card">
-            <img src="image1.jpg" alt="Product 1">
-            <h3>Product 1</h3>
-            <p>$10.00</p>
-            <button class="add-to-cart" data-image="image1.jpg" data-name="Product 1" data-price="10.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image2.jpg" alt="Product 2">
-            <h3>Product 2</h3>
-            <p>$15.00</p>
-            <button class="add-to-cart" data-image="image2.jpg" data-name="Product 2" data-price="15.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image3.jpg" alt="Product 3">
-            <h3>Product 3</h3>
-            <p>$20.00</p>
-            <button class="add-to-cart" data-image="image3.jpg" data-name="Product 3" data-price="20.00">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <img src="image4.jpg" alt="Product 4">
-            <h3>Product 4</h3>
-            <p>$25.00</p>
-            <button class="add-to-cart" data-image="image4.jpg" data-name="Product 4" data-price="25.00">Add to Cart</button>
-        </div>
-    </div>
+
     <!-- Modal for Product Details -->
     <div id="popup-modal" class="modal">
         <div class="modal-content">
@@ -485,6 +419,21 @@
         </div>
     </div>
 
+    <!-- Sign-Up Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="tel" id="phone" placeholder="Phone Number" required>
+                <input type="text" id="location" placeholder="Location" required>
+                <input type="text" id="landmark" placeholder="Landmark" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="nav-icons">
@@ -495,9 +444,10 @@
     </footer>
 
     <script>
-        // JavaScript for Modal and Cart Functionality
+        // JavaScript for Modal, Cart, and Sign-Up Functionality
         const modal = document.getElementById("popup-modal");
         const cartModal = document.getElementById("cart-modal");
+        const signupModal = document.getElementById("signup-modal");
         const closeButtons = document.querySelectorAll(".close");
         const quantitySelect = document.getElementById("quantity");
         const totalPriceDisplay = document.getElementById("total-price");
@@ -507,8 +457,17 @@
         const cartItemsList = document.getElementById("cart-items");
         const cartTotal = document.getElementById("cart-total");
         const proceedButton = document.getElementById("proceed-button");
+        const signupLink = document.getElementById("signup-link");
+        const signupForm = document.getElementById("signup-form");
         let selectedItem = null;
         let cart = [];
+
+        // Check if the user is new (no user data in localStorage)
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+            // Automatically open the sign-up modal for new users
+            signupModal.style.display = "flex";
+        }
 
         // Open popup modal when "Add to Cart" is clicked
         document.querySelectorAll(".add-to-cart").forEach((button) => {
@@ -557,11 +516,17 @@
             cartModal.style.display = "flex";
         });
 
+        // Open sign-up modal when sign-up link is clicked
+        signupLink.addEventListener("click", () => {
+            signupModal.style.display = "flex";
+        });
+
         // Close modals when close button is clicked
         closeButtons.forEach((button) => {
             button.addEventListener("click", () => {
                 modal.style.display = "none";
                 cartModal.style.display = "none";
+                signupModal.style.display = "none";
             });
         });
 
@@ -593,8 +558,28 @@
             cartTotal.textContent = `Total: $${total.toFixed(2)}`;
         }
 
-        // Send email with cart details using Formspree
+        // Save user information locally and close sign-up modal
+        signupForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const user = {
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                location: document.getElementById("location").value,
+                landmark: document.getElementById("landmark").value,
+            };
+            localStorage.setItem("user", JSON.stringify(user));
+            alert("Sign up successful!");
+            signupModal.style.display = "none";
+        });
+
+        // Send user information and cart details using Formspree
         proceedButton.addEventListener("click", () => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user) {
+                alert("Please sign up first.");
+                return;
+            }
+
             const cartDetails = cart
                 .map(
                     (item) => `
@@ -606,6 +591,10 @@
             const totalPrice = cart.reduce((sum, item) => sum + item.total, 0);
 
             const formData = new FormData();
+            formData.append("name", user.name);
+            formData.append("phone", user.phone);
+            formData.append("location", user.location);
+            formData.append("landmark", user.landmark);
             formData.append("cart_details", cartDetails);
             formData.append("total_price", `$${totalPrice.toFixed(2)}`);
 
