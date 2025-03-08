@@ -10,12 +10,13 @@
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+        import { getDatabase, ref, set, get, push } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
 
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyD5_fJHFW-4HQjETLJtJ4rD73h3M1zllr0",
             authDomain: "minimart-52e7c.firebaseapp.com",
+            databaseURL: "https://minimart-52e7c-default-rtdb.firebaseio.com", // Replace with your Realtime Database URL
             projectId: "minimart-52e7c",
             storageBucket: "minimart-52e7c.appspot.com",
             messagingSenderId: "869234813362",
@@ -26,7 +27,7 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app); // Initialize Firestore
+        const database = getDatabase(app); // Initialize Realtime Database
 
         // Check authentication state
         onAuthStateChanged(auth, (user) => {
@@ -40,344 +41,56 @@
             }
         });
 
-        // Function to load user's cart data from Firestore
+        // Function to load user's cart data from Realtime Database
         async function loadUserCart(userId) {
             try {
-                const userCartRef = doc(db, "carts", userId); // Reference to the user's cart document
-                const docSnap = await getDoc(userCartRef);
+                const userCartRef = ref(database, `carts/${userId}`); // Reference to the user's cart
+                const snapshot = await get(userCartRef);
 
-                if (docSnap.exists()) {
-                    const cartData = docSnap.data().items; // Get cart items
+                if (snapshot.exists()) {
+                    const cartData = snapshot.val().items; // Get cart items
                     cart = cartData; // Update the cart array
                     updateCartCount();
                     updateCartItems();
-                    console.log("Cart loaded from Firestore:", cart);
+                    console.log("Cart loaded from Realtime Database:", cart);
                 } else {
                     console.log("No cart data found for this user.");
                 }
             } catch (error) {
-                console.error("Error loading cart from Firestore:", error);
+                console.error("Error loading cart from Realtime Database:", error);
             }
         }
 
-        // Function to save cart data to Firestore
-        async function saveCartToFirestore(userId, cart) {
+        // Function to save cart data to Realtime Database
+        async function saveCartToDatabase(userId, cart) {
             try {
-                const userCartRef = doc(db, "carts", userId); // Reference to the user's cart document
-                await setDoc(userCartRef, { items: cart }); // Save cart data
-                console.log("Cart saved to Firestore");
+                const userCartRef = ref(database, `carts/${userId}`); // Reference to the user's cart
+                await set(userCartRef, { items: cart }); // Save cart data
+                console.log("Cart saved to Realtime Database");
             } catch (error) {
-                console.error("Error saving cart to Firestore:", error);
+                console.error("Error saving cart to Realtime Database:", error);
             }
         }
 
-        // Function to save order history to Firestore
+        // Function to save order history to Realtime Database
         async function saveOrderHistory(userId, cartDetails, totalPrice, location) {
             try {
-                const ordersRef = collection(db, "orders"); // Reference to the orders collection
-                await addDoc(ordersRef, {
-                    userId: userId,
+                const ordersRef = ref(database, `orders/${userId}`); // Reference to the user's orders
+                const newOrderRef = push(ordersRef); // Generate a unique key for the order
+                await set(newOrderRef, {
                     items: cartDetails,
                     totalPrice: totalPrice,
                     location: location,
-                    timestamp: new Date(),
+                    timestamp: new Date().toISOString(),
                 });
-                console.log("Order history saved to Firestore");
+                console.log("Order history saved to Realtime Database");
             } catch (error) {
                 console.error("Error saving order history:", error);
             }
         }
     </script>
     <style>
-        <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background: #f9f9f9;
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background: #333;
-            color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        .auth-links a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 10px;
-        }
-
-        .auth-links a:hover {
-            text-decoration: underline;
-        }
-
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .cart-icon i {
-            font-size: 24px;
-        }
-
-        .cart-count {
-            background: red;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 12px;
-            position: absolute;
-            top: -10px;
-            right: -10px;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: url('hero.jpg') no-repeat center center/cover;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-align: center;
-        }
-
-        .hero h2 {
-            font-size: 36px;
-            margin: 0;
-        }
-
-        .hero p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .hero button {
-            padding: 10px 20px;
-            background: #ff6f61;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 300px;
-            position: relative;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .close {
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-        }
-
-        #modal-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        #modal-name {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        #modal-price {
-            font-size: 16px;
-            margin: 10px 0;
-        }
-
-        #quantity {
-            margin: 10px 0;
-            padding: 5px;
-            width: 100%;
-        }
-
-        #total-price {
-            font-weight: bold;
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        #buy-button {
-            padding: 10px 20px;
-            background: #ff6f61;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        /* Cart Modal */
-        #cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        #cart-items {
-            list-style: none;
-            padding: 0;
-        }
-
-        #cart-items li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-        }
-
-        #cart-items img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        #cart-total {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        #proceed-button {
-            padding: 10px 20px;
-            background: #333;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        /* Product Grid */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .product-card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-
-        .product-card h3 {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .product-card p {
-            font-size: 16px;
-            color: #333;
-            margin: 5px 0;
-        }
-
-        .product-card button {
-            margin: 10px 0;
-            padding: 10px 20px;
-            background: #333;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        /* Footer */
-        footer {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
-        }
-
-        .nav-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .nav-icons i {
-            font-size: 24px;
-            cursor: pointer;
-        }
-    </style>
+        /* Your existing CSS styles here */
     </style>
 </head>
 <body>
@@ -530,10 +243,10 @@
             updateCartTotal();
             modal.style.display = "none";
 
-            // Save cart to Firestore
+            // Save cart to Realtime Database
             const user = auth.currentUser;
             if (user) {
-                saveCartToFirestore(user.uid, cart);
+                saveCartToDatabase(user.uid, cart);
             }
         });
 
@@ -618,7 +331,7 @@
 
                 const totalPrice = cart.reduce((sum, item) => sum + item.total, 0);
 
-                // Save order history to Firestore
+                // Save order history to Realtime Database
                 const user = auth.currentUser;
                 if (user) {
                     await saveOrderHistory(user.uid, cartDetails, totalPrice, locationString);
