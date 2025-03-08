@@ -248,8 +248,8 @@
             color: #ff6f61;
         }
 
-        /* Sign-Up Form */
-        #signup-modal {
+        /* Modal Styles */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -262,27 +262,57 @@
             z-index: 1000;
         }
 
-        #signup-form {
+        .modal-content {
             background: #fff;
             padding: 20px;
             border-radius: 15px;
             width: 300px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
-        #signup-form input {
+        .close {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+        }
+
+        #modal-image {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 14px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
         }
 
-        #signup-form button {
+        #modal-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        #modal-price {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        #quantity {
+            margin: 10px 0;
+            padding: 5px;
+            width: 100%;
+        }
+
+        #total-price {
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        #buy-button {
             padding: 10px 20px;
-            background: #667eea;
+            background: #ff6f61;
             color: #fff;
             border: none;
             border-radius: 25px;
@@ -291,89 +321,8 @@
             transition: background 0.3s ease, transform 0.3s ease;
         }
 
-        #signup-form button:hover {
-            background: #764ba2;
-            transform: translateY(-3px);
-        }
-
-        /* Profile Modal */
-        #profile-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        #profile-modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            width: 300px;
-            text-align: left;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        #profile-modal-content h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        #profile-modal-content p {
-            margin: 10px 0;
-            color: #666;
-        }
-
-        /* Search Modal */
-        #search-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        #search-form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            width: 300px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        #search-form input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 14px;
-        }
-
-        #search-form button {
-            padding: 10px 20px;
-            background: #667eea;
-            color: #fff;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-        #search-form button:hover {
-            background: #764ba2;
+        #buy-button:hover {
+            background: #ff4a3d;
             transform: translateY(-3px);
         }
     </style>
