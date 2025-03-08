@@ -274,6 +274,19 @@
             cursor: pointer;
         }
 
+        /* Highlighted Product */
+        .highlight {
+            border: 2px solid #ff6f61 !important;
+            background-color: #fff3f2;
+            animation: pop 0.5s ease-in-out;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         /* Footer */
         footer {
             background: #333;
@@ -332,6 +345,75 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        /* Profile Modal */
+        #profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #profile-modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: left;
+        }
+
+        #profile-modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        #profile-modal-content p {
+            margin: 10px 0;
+        }
+
+        /* Search Modal */
+        #search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #search-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        #search-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #search-form button {
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -343,7 +425,6 @@
         </div>
         <div class="auth-links">
             <a href="#" id="signup-link">Sign Up</a>
-            <a href="#" id="login-link">Sign In</a>
         </div>
         <div class="cart-icon">
             <i class="fas fa-shopping-cart"></i>
@@ -362,25 +443,25 @@
 
     <!-- Product Grid -->
     <div class="product-grid">
-        <div class="product-card">
+        <div class="product-card" data-name="Product 1">
             <img src="image1.jpg" alt="Product 1">
             <h3>Product 1</h3>
             <p>$10.00</p>
             <button class="add-to-cart" data-image="image1.jpg" data-name="Product 1" data-price="10.00">Add to Cart</button>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-name="Product 2">
             <img src="image2.jpg" alt="Product 2">
             <h3>Product 2</h3>
             <p>$15.00</p>
             <button class="add-to-cart" data-image="image2.jpg" data-name="Product 2" data-price="15.00">Add to Cart</button>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-name="Product 3">
             <img src="image3.jpg" alt="Product 3">
             <h3>Product 3</h3>
             <p>$20.00</p>
             <button class="add-to-cart" data-image="image3.jpg" data-name="Product 3" data-price="20.00">Add to Cart</button>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-name="Product 4">
             <img src="image4.jpg" alt="Product 4">
             <h3>Product 4</h3>
             <p>$25.00</p>
@@ -434,20 +515,47 @@
         </div>
     </div>
 
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content" id="profile-modal-content">
+            <span class="close">&times;</span>
+            <h2>Profile Information</h2>
+            <p><strong>Name:</strong> <span id="profile-name"></span></p>
+            <p><strong>Phone:</strong> <span id="profile-phone"></span></p>
+            <p><strong>Location:</strong> <span id="profile-location"></span></p>
+            <p><strong>Landmark:</strong> <span id="profile-landmark"></span></p>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Search Products</h2>
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Enter product name">
+                <button type="submit">Search</button>
+            </form>
+            <div id="search-results"></div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="nav-icons">
-            <i class="fas fa-home"></i>
-            <i class="fas fa-search"></i>
-            <i class="fas fa-user"></i>
+            <i class="fas fa-home" id="home-icon"></i>
+            <i class="fas fa-search" id="search-icon"></i>
+            <i class="fas fa-user" id="profile-icon"></i>
         </div>
     </footer>
 
     <script>
-        // JavaScript for Modal, Cart, and Sign-Up Functionality
+        // JavaScript for Modal, Cart, Sign-Up, Profile, and Search Functionality
         const modal = document.getElementById("popup-modal");
         const cartModal = document.getElementById("cart-modal");
         const signupModal = document.getElementById("signup-modal");
+        const profileModal = document.getElementById("profile-modal");
+        const searchModal = document.getElementById("search-modal");
         const closeButtons = document.querySelectorAll(".close");
         const quantitySelect = document.getElementById("quantity");
         const totalPriceDisplay = document.getElementById("total-price");
@@ -459,6 +567,12 @@
         const proceedButton = document.getElementById("proceed-button");
         const signupLink = document.getElementById("signup-link");
         const signupForm = document.getElementById("signup-form");
+        const profileIcon = document.getElementById("profile-icon");
+        const searchIcon = document.getElementById("search-icon");
+        const homeIcon = document.getElementById("home-icon");
+        const searchForm = document.getElementById("search-form");
+        const searchInput = document.getElementById("search-input");
+        const searchResults = document.getElementById("search-results");
         let selectedItem = null;
         let cart = [];
 
@@ -521,12 +635,33 @@
             signupModal.style.display = "flex";
         });
 
+        // Open profile modal when profile icon is clicked
+        profileIcon.addEventListener("click", () => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user) {
+                document.getElementById("profile-name").textContent = user.name;
+                document.getElementById("profile-phone").textContent = user.phone;
+                document.getElementById("profile-location").textContent = user.location;
+                document.getElementById("profile-landmark").textContent = user.landmark;
+                profileModal.style.display = "flex";
+            } else {
+                alert("Please sign up first.");
+            }
+        });
+
+        // Open search modal when search icon is clicked
+        searchIcon.addEventListener("click", () => {
+            searchModal.style.display = "flex";
+        });
+
         // Close modals when close button is clicked
         closeButtons.forEach((button) => {
             button.addEventListener("click", () => {
                 modal.style.display = "none";
                 cartModal.style.display = "none";
                 signupModal.style.display = "none";
+                profileModal.style.display = "none";
+                searchModal.style.display = "none";
             });
         });
 
@@ -572,51 +707,33 @@
             signupModal.style.display = "none";
         });
 
-        // Send user information and cart details using Formspree
-        proceedButton.addEventListener("click", () => {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user) {
-                alert("Please sign up first.");
-                return;
+        // Search functionality
+        searchForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const query = searchInput.value.toLowerCase();
+            const products = document.querySelectorAll(".product-card");
+            let found = false;
+
+            products.forEach((product) => {
+                const productName = product.getAttribute("data-name").toLowerCase();
+                if (productName.includes(query)) {
+                    found = true;
+                    product.scrollIntoView({ behavior: "smooth", block: "center" });
+                    product.classList.add("highlight");
+                    setTimeout(() => {
+                        product.classList.remove("highlight");
+                    }, 2000); // Remove highlight after 2 seconds
+                }
+            });
+
+            if (!found) {
+                alert("No matching products found.");
             }
+        });
 
-            const cartDetails = cart
-                .map(
-                    (item) => `
-                    ${item.name} - Qty: ${item.quantity} - Price: $${item.total.toFixed(2)}
-                `
-                )
-                .join("\n");
-
-            const totalPrice = cart.reduce((sum, item) => sum + item.total, 0);
-
-            const formData = new FormData();
-            formData.append("name", user.name);
-            formData.append("phone", user.phone);
-            formData.append("location", user.location);
-            formData.append("landmark", user.landmark);
-            formData.append("cart_details", cartDetails);
-            formData.append("total_price", `$${totalPrice.toFixed(2)}`);
-
-            fetch("https://formspree.io/f/xoveakdz", {
-                method: "POST",
-                body: formData,
-                headers: {
-                    Accept: "application/json",
-                },
-            })
-                .then((response) => {
-                    if (response.ok) {
-                        alert("Order details sent successfully!");
-                        console.log("Formspree response:", response);
-                    } else {
-                        throw new Error("Failed to send order details.");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Formspree Error:", error);
-                    alert("Failed to send order details. Please try again.");
-                });
+        // Home icon functionality (navigate to main page without refresh)
+        homeIcon.addEventListener("click", () => {
+            window.location.href = "#";
         });
     </script>
 </body>
