@@ -459,6 +459,61 @@
             100% { left: 100%; }
         }
 
+        /* More Icon and Additional Icons */
+        .more-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .more-icon:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
+        .additional-icons {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .additional-icons .icon {
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .additional-icons .icon:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero h2 {
@@ -618,6 +673,57 @@
         </div>
     </div>
 
+    <!-- Foods Modal -->
+    <div id="foods-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Foods</h2>
+            <div class="product-grid">
+                <div class="product-card" data-name="Food 1">
+                    <img src="food1.jpg" alt="Food 1">
+                    <h3>Food 1</h3>
+                    <p>$8.00</p>
+                    <button class="add-to-cart" data-image="food1.jpg" data-name="Food 1" data-price="8.00">Add to Cart</button>
+                </div>
+                <div class="product-card" data-name="Food 2">
+                    <img src="food2.jpg" alt="Food 2">
+                    <h3>Food 2</h3>
+                    <p>$12.00</p>
+                    <button class="add-to-cart" data-image="food2.jpg" data-name="Food 2" data-price="12.00">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Extras Modal -->
+    <div id="extras-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Extras</h2>
+            <div class="product-grid">
+                <div class="product-card" data-name="Extra 1">
+                    <img src="extra1.jpg" alt="Extra 1">
+                    <h3>Extra 1</h3>
+                    <p>$5.00</p>
+                    <button class="add-to-cart" data-image="extra1.jpg" data-name="Extra 1" data-price="5.00">Add to Cart</button>
+                </div>
+                <div class="product-card" data-name="Extra 2">
+                    <img src="extra2.jpg" alt="Extra 2">
+                    <h3>Extra 2</h3>
+                    <p>$7.00</p>
+                    <button class="add-to-cart" data-image="extra2.jpg" data-name="Extra 2" data-price="7.00">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- More Icon and Additional Icons -->
+    <div class="more-icon" onclick="toggleAdditionalIcons()">More</div>
+    <div class="additional-icons" id="additional-icons">
+        <div class="icon" onclick="showFoods()">Foods</div>
+        <div class="icon" onclick="showExtras()">Extras</div>
+    </div>
+
     <!-- Modal for Product Details -->
     <div id="popup-modal" class="modal">
         <div class="modal-content">
@@ -721,6 +827,8 @@
         const profileModal = document.getElementById("profile-modal");
         const searchModal = document.getElementById("search-modal");
         const successModal = document.getElementById("success-modal");
+        const foodsModal = document.getElementById("foods-modal");
+        const extrasModal = document.getElementById("extras-modal");
         const closeButtons = document.querySelectorAll(".close");
         const quantitySelect = document.getElementById("quantity");
         const totalPriceDisplay = document.getElementById("total-price");
@@ -738,8 +846,26 @@
         const searchForm = document.getElementById("search-form");
         const searchInput = document.getElementById("search-input");
         const searchResults = document.getElementById("search-results");
+        const additionalIcons = document.getElementById("additional-icons");
         let selectedItem = null;
         let cart = [];
+
+        // Toggle Additional Icons
+        function toggleAdditionalIcons() {
+            additionalIcons.style.display = additionalIcons.style.display === "flex" ? "none" : "flex";
+        }
+
+        // Show Foods Modal
+        function showFoods() {
+            foodsModal.style.display = "flex";
+            toggleAdditionalIcons();
+        }
+
+        // Show Extras Modal
+        function showExtras() {
+            extrasModal.style.display = "flex";
+            toggleAdditionalIcons();
+        }
 
         // Carousel Functionality
         let currentSlide = 0;
@@ -851,6 +977,8 @@
                 profileModal.style.display = "none";
                 searchModal.style.display = "none";
                 successModal.style.display = "none";
+                foodsModal.style.display = "none";
+                extrasModal.style.display = "none";
             });
         });
 
