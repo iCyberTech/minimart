@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My E-Commerce Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Akua's Restaurant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* General Styles */
@@ -18,6 +20,10 @@
             background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
             color: #333;
             line-height: 1.6;
+            padding-top: 70px; /* Add padding to body to account for fixed header */
+            padding-bottom: 70px; /* Add padding to body to account for fixed footer */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Header */
@@ -28,8 +34,10 @@
             padding: 10px 20px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -46,40 +54,55 @@
             border-radius: 50%;
         }
 
-        .auth-links a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 10px;
+        .logo h1 {
+            font-size: 24px;
             font-weight: bold;
-            transition: color 0.3s ease;
+            background: linear-gradient(135deg, #ff6f61, #ff4a3d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
         }
 
-        .auth-links a:hover {
-            color: #ff6f61;
-        }
-
-        /* Sign Up Button */
-        #signup-link {
+        .logo h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 3px;
             background: #ff6f61;
-            padding: 10px 20px;
-            border-radius: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease, transform 0.3s ease;
+            border-radius: 2px;
+            animation: ladleUnderline 2s infinite ease-in-out;
         }
 
-        #signup-link:hover {
-            background: #ff4a3d;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        @keyframes ladleUnderline {
+            0% { transform: scaleX(0.8); }
+            50% { transform: scaleX(1.2); }
+            100% { transform: scaleX(0.8); }
         }
 
+        .auth-links {
+            display: none; /* Hide the auth links in the header */
+        }
+
+        /* Cart Icon with Shake and Bounce Animation */
         .cart-icon {
             position: relative;
             cursor: pointer;
             transition: transform 0.3s ease;
+            animation: shakeAndBounce 2s infinite;
+        }
+
+        @keyframes shakeAndBounce {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateY(-5px) rotate(-5deg); }
+            20%, 40%, 60%, 80% { transform: translateY(-5px) rotate(5deg); }
         }
 
         .cart-icon:hover {
+            animation: none; /* Stop animation on hover */
             transform: scale(1.1);
         }
 
@@ -96,6 +119,13 @@
             position: absolute;
             top: -10px;
             right: -10px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
         /* Proceed to Checkout Button */
@@ -109,6 +139,7 @@
             font-size: 16px;
             transition: background 0.3s ease, transform 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
         }
 
         #proceed-button:hover {
@@ -119,7 +150,7 @@
 
         /* Hero Section */
         .hero {
-            background: url('hero.jpg') no-repeat center center/cover;
+            background: url('hero.jpeg') no-repeat center center/cover;
             height: 300px;
             display: flex;
             justify-content: center;
@@ -137,7 +168,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
         }
 
         .hero h2 {
@@ -145,6 +176,7 @@
             margin: 0;
             z-index: 1;
             animation: fadeInDown 1s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .hero p {
@@ -152,6 +184,7 @@
             margin: 10px 0;
             z-index: 1;
             animation: fadeInUp 1s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .hero button {
@@ -165,11 +198,14 @@
             transition: background 0.3s ease, transform 0.3s ease;
             z-index: 1;
             animation: fadeIn 1.5s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
         }
 
         .hero button:hover {
             background: #ff4a3d;
             transform: translateY(-5px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes fadeInDown {
@@ -239,11 +275,14 @@
             cursor: pointer;
             font-size: 16px;
             transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
         }
 
         .product-card button:hover {
             background: #764ba2;
             transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
         }
 
         /* Highlighted Product */
@@ -293,6 +332,8 @@
             padding: 10px;
             cursor: pointer;
             z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
         }
 
         .carousel-control.prev {
@@ -303,31 +344,65 @@
             right: 10px;
         }
 
-        /* Footer */
+        /* Updated Footer Styles */
         footer {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
             box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
         }
 
         .nav-icons {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            padding: 0 20px;
         }
 
         .nav-icons i {
             font-size: 24px;
             cursor: pointer;
             transition: transform 0.3s ease, color 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: float 3s infinite ease-in-out;
         }
 
         .nav-icons i:hover {
-            transform: scale(1.2);
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
             color: #ff6f61;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+            animation: none; /* Stop animation on hover */
+        }
+
+        .nav-icons i.active {
+            background: #ff6f61;
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         /* Modal Styles */
@@ -353,6 +428,8 @@
             text-align: center;
             position: relative;
             animation: fadeIn 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
         }
 
         .close {
@@ -402,11 +479,14 @@
             cursor: pointer;
             font-size: 16px;
             transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
         }
 
         #buy-button:hover {
             background: #ff4a3d;
             transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
         }
 
         /* Success Modal Styles */
@@ -462,7 +542,7 @@
         /* More Icon and Additional Icons */
         .more-icon {
             position: fixed;
-            bottom: 20px;
+            bottom: 90px; /* Adjusted to avoid overlapping with footer */
             right: 20px;
             width: 60px;
             height: 60px;
@@ -486,7 +566,7 @@
 
         .additional-icons {
             position: fixed;
-            bottom: 90px;
+            bottom: 160px; /* Adjusted to avoid overlapping with footer */
             right: 20px;
             display: none;
             flex-direction: column;
@@ -514,6 +594,52 @@
             transform: scale(1.1);
         }
 
+        /* Profile Modal - Order History Section */
+        #profile-modal-content {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #order-history {
+            margin-top: 20px;
+        }
+
+        #order-history h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        #order-history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #order-history li {
+            background: #f5f7fa;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #order-history li p {
+            margin: 5px 0;
+        }
+
+        /* Scrollable Cart Items */
+        #cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Scrollable Foods and Extras Modals */
+        .modal-content .product-grid {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero h2 {
@@ -532,11 +658,6 @@
                 width: 95%;
             }
 
-            #signup-link {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-
             #proceed-button {
                 padding: 8px 16px;
                 font-size: 14px;
@@ -553,7 +674,7 @@
                 margin-bottom: 10px;
             }
 
-            .auth-links {
+            .cart-icon {
                 margin-top: 10px;
             }
 
@@ -578,15 +699,218 @@
                 padding: 8px 16px;
             }
 
-            #signup-link {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-
             #proceed-button {
                 padding: 6px 12px;
                 font-size: 12px;
             }
+        }
+
+        /* Cancel Button for Cart Items */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .cart-item-details span {
+            display: block;
+            font-size: 14px;
+        }
+
+        .cart-item-remove {
+            cursor: pointer;
+            color: #ff6f61;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+
+        .cart-item-remove:hover {
+            color: #ff4a3d;
+        }
+
+        /* Enhanced Sign-Up Modal */
+        #signup-modal .modal-content {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #signup-modal h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #signup-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+        }
+
+        #signup-form input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        #signup-form button {
+            width: 100%;
+            padding: 10px;
+            background: #ff6f61;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
+        }
+
+        #signup-form button:hover {
+            background: #ff4a3d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Mobile Keyboard Responsiveness */
+        @media (max-width: 480px) {
+            #signup-modal .modal-content {
+                padding: 20px;
+            }
+
+            #signup-form input {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            #signup-form button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+
+        /* Description Input Field in Cart Modal */
+        #description {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        /* Custom Alert Modal */
+        #custom-alert-modal {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .custom-alert-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .custom-alert-content h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .custom-alert-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .custom-alert-content button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
+        }
+
+        .custom-alert-content button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Sign Up/Logout Button in Profile Modal */
+        #profile-auth-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ff6f61;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
+        }
+
+        #profile-auth-button:hover {
+            background: #ff4a3d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Sign Up Required Button */
+        #signup-required-button {
+            position: fixed;
+            bottom: 160px; /* Adjusted to avoid overlapping with footer */
+            left: 20px;
+            padding: 10px 20px;
+            background: #ff6f61;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border: 2px solid #fff;
+        }
+
+        #signup-required-button:hover {
+            background: #ff4a3d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -594,11 +918,11 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            <img src="logo.png" alt="Logo">
-            <h1>My E-Commerce Site</h1>
+            <img src="logo.jpeg" alt="Logo">
+            <h1>Akua's Restaurant</h1>
         </div>
         <div class="auth-links">
-            <a href="#" id="signup-link">Sign Up</a>
+            <!-- Removed the Sign Up/Logout button from here -->
         </div>
         <div class="cart-icon">
             <i class="fas fa-shopping-cart"></i>
@@ -609,8 +933,8 @@
     <!-- Hero Section -->
     <div class="hero">
         <div>
-            <h2>Welcome to My E-Commerce Site</h2>
-            <p>Discover amazing products at great prices</p>
+            <h2>Welcome to Akua's Restaurant</h2>
+            <p>Discover Amazing Foods and More</p>
             <button>Shop Now</button>
         </div>
     </div>
@@ -619,13 +943,13 @@
     <div class="carousel">
         <div class="carousel-inner">
             <div class="carousel-item">
-                <img src="slide1.jpg" alt="Slide 1">
+                <img src="slide1.jpeg" alt="slide1">
             </div>
             <div class="carousel-item">
-                <img src="slide2.jpg" alt="Slide 2">
+                <img src="slide2.jpeg" alt="slide2">
             </div>
             <div class="carousel-item">
-                <img src="slide3.jpg" alt="Slide 3">
+                <img src="slide3.jpeg" alt="slide3">
             </div>
         </div>
         <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
@@ -634,42 +958,42 @@
 
     <!-- Product Grid -->
     <div class="product-grid">
-        <div class="product-card" data-name="Product 1">
-            <img src="image1.jpg" alt="Product 1">
-            <h3>Product 1</h3>
-            <p>$10.00</p>
-            <button class="add-to-cart" data-image="image1.jpg" data-name="Product 1" data-price="10.00">Add to Cart</button>
+        <div class="product-card" data-name="Jollof & Chicken">
+            <img src="image1.jpg" alt="Jollof">
+            <h3>Jollof & Chicken</h3>
+            <p>AED15.00</p>
+            <button class="add-to-cart" data-image="image1.jpg" data-name="Jollof & Chicken" data-price="15.00">Add to Cart</button>
         </div>
-        <div class="product-card" data-name="Product 2">
+        <div class="product-card" data-name="Fufu & Light Soup with Meat">
             <img src="image2.jpg" alt="Product 2">
-            <h3>Product 2</h3>
-            <p>$15.00</p>
-            <button class="add-to-cart" data-image="image2.jpg" data-name="Product 2" data-price="15.00">Add to Cart</button>
+            <h3>Fufu & Light Soup </h3>
+            <p>AED25.00</p>
+            <button class="add-to-cart" data-image="image2.jpg" data-name="Fufu & Light Soup with Meat" data-price="25.00">Add to Cart</button>
         </div>
-        <div class="product-card" data-name="Product 3">
+        <div class="product-card" data-name="Y)k) Gari/G)b3">
             <img src="image3.jpg" alt="Product 3">
-            <h3>Product 3</h3>
-            <p>$20.00</p>
-            <button class="add-to-cart" data-image="image3.jpg" data-name="Product 3" data-price="20.00">Add to Cart</button>
+            <h3>Y)k) Gari/G)b3</h3>
+            <p>AED15.00</p>
+            <button class="add-to-cart" data-image="image3.jpg" data-name="Y)k) Gari/G)b3" data-price="15.00">Add to Cart</button>
         </div>
-        <div class="product-card" data-name="Product 4">
+        <div class="product-card" data-name="Rice Ball With Meat Palm Nut Soup">
             <img src="image4.jpg" alt="Product 4">
-            <h3>Product 4</h3>
-            <p>$25.00</p>
-            <button class="add-to-cart" data-image="image4.jpg" data-name="Product 4" data-price="25.00">Add to Cart</button>
+            <h3>Rice Ball With Soup</h3>
+            <p>AED25.00</p>
+            <button class="add-to-cart" data-image="image4.jpg" data-name="Rice Ball With Meat Palm Nut Soup" data-price="25.00">Add to Cart</button>
         </div>
         <!-- Add more products with different sizes -->
-        <div class="product-card" data-name="Product 5">
+        <div class="product-card" data-name="Banku & Grill Tilapia">
             <img src="image5.jpg" alt="Product 5">
-            <h3>Product 5</h3>
-            <p>$30.00</p>
-            <button class="add-to-cart" data-image="image5.jpg" data-name="Product 5" data-price="30.00">Add to Cart</button>
+            <h3>Banku & Grill Tilapia</h3>
+            <p>AED35.00</p>
+            <button class="add-to-cart" data-image="image5.jpg" data-name="Banku & Grill Tilapia" data-price="35.00">Add to Cart</button>
         </div>
-        <div class="product-card" data-name="Product 6">
+        <div class="product-card" data-name="Yam and Kontomire' Stew">
             <img src="image6.jpg" alt="Product 6">
-            <h3>Product 6</h3>
-            <p>$35.00</p>
-            <button class="add-to-cart" data-image="image6.jpg" data-name="Product 6" data-price="35.00">Add to Cart</button>
+            <h3>Yam and Kontomire'</h3>
+            <p>AED30.00</p>
+            <button class="add-to-cart" data-image="image6.jpg" data-name="Yam and Kontomire' Stew" data-price="30.00">Add to Cart</button>
         </div>
     </div>
 
@@ -679,17 +1003,60 @@
             <span class="close">&times;</span>
             <h2>Foods</h2>
             <div class="product-grid">
-                <div class="product-card" data-name="Food 1">
+                <div class="product-card" data-name="Chicken Kebab">
                     <img src="food1.jpg" alt="Food 1">
-                    <h3>Food 1</h3>
-                    <p>$8.00</p>
-                    <button class="add-to-cart" data-image="food1.jpg" data-name="Food 1" data-price="8.00">Add to Cart</button>
+                    <h3>Chicken Kebab</h3>
+                    <p>AED20.00</p>
+                    <button class="add-to-cart" data-image="food1.jpg" data-name="Chicken Kebab" data-price="20.00">Add to Cart</button>
                 </div>
-                <div class="product-card" data-name="Food 2">
+
+                
+                <div class="product-card" data-name="Rice Balls Omo Tuo & Groundnut Soup Goat Meat/Fish">
                     <img src="food2.jpg" alt="Food 2">
-                    <h3>Food 2</h3>
-                    <p>$12.00</p>
-                    <button class="add-to-cart" data-image="food2.jpg" data-name="Food 2" data-price="12.00">Add to Cart</button>
+                    <h3>Rice Balls Omo Tuo & Groundnut Soup Goat Meat/Fish</h3>
+                    <p>AED45.00</p>
+                    <button class="add-to-cart" data-image="food2.jpg" data-name="Rice Balls Omo Tuo & Groundnut Soup Goat Meat/Fish" data-price="45.00">Add to Cart</button>
+                </div>
+                
+                     <div class="product-card" data-name="Fufu With Palm Nut Soup Fish & Meat">
+                    <img src="food3.jpg" alt="Food 2">
+                    <h3>Fufu With Palm Nut Soup Fish & Meat</h3>
+                    <p>AED30.00</p>
+                    <button class="add-to-cart" data-image="food3.jpg" data-name="Fufu With Palm Nut Soup Fish & Meat" data-price="30.00">Add to Cart</button>
+                </div>
+                    <div class="product-card" data-name="Jollof and Fish">
+                    <img src="food4.jpg" alt="Food 2">
+                    <h3>Jollof and Fish</h3>
+                    <p>AED20.00</p>
+                    <button class="add-to-cart" data-image="food4.jpg" data-name="Jollof and Fish" data-price="20.00">Add to Cart</button>
+                </div>
+                
+                <div class="product-card" data-name="Kenkay And Grilled Tilapia">
+                    <img src="food5.jpg" alt="Food 2">
+                    <h3>Kenkay And Grilled Tilapia</h3>
+                    <p>AED35.00</p>
+                    <button class="add-to-cart" data-image="food5.jpg" data-name="Kenkay And Grilled Tilapia" data-price="35.00">Add to Cart</button>
+                </div>
+                
+                <div class="product-card" data-name="Banku With Peanut & Fish">
+                    <img src="food6.jpg" alt="Food 2">
+                    <h3>Banku With Peanut Fish</h3>
+                    <p>AED25.00</p>
+                    <button class="add-to-cart" data-image="food6.jpg" data-name="Banku With Peanut & Fish" data-price="25.00">Add to Cart</button>
+                </div>
+                
+                <div class="product-card" data-name="Banku With Palm Nut Fish & Meat">
+                    <img src="food7.jpg" alt="Food 2">
+                    <h3>Banku With Palm Nut Fish & Meat</h3>
+                    <p>AED30.00</p>
+                    <button class="add-to-cart" data-image="food7.jpg" data-name="Banku With Palm Nut Fish & Meat" data-price="30.00">Add to Cart</button>
+                </div>
+                
+                <div class="product-card" data-name="Jollof With Fried Fish & Plantain">
+                    <img src="food8.jpg" alt="Food 2">
+                    <h3>Jollof With Fried Fish & Plantain</h3>
+                    <p>AED25.00</p>
+                    <button class="add-to-cart" data-image="food8.jpg" data-name="Jollof With Fried Fish & Plantain" data-price="25.00">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -701,17 +1068,90 @@
             <span class="close">&times;</span>
             <h2>Extras</h2>
             <div class="product-grid">
-                <div class="product-card" data-name="Extra 1">
-                    <img src="extra1.jpg" alt="Extra 1">
-                    <h3>Extra 1</h3>
-                    <p>$5.00</p>
-                    <button class="add-to-cart" data-image="extra1.jpg" data-name="Extra 1" data-price="5.00">Add to Cart</button>
+                <div class="product-card" data-name="Extra Chicken">
+                    <img src="extra 1.jpg" alt="Extra 1">
+                    <h3>Extra Chicken</h3>
+                    <p>AED20.00</p>
+                    <button class="add-to-cart" data-image="extra 1.jpg" data-name="Extra Chicken" data-price="20.00">Add to Cart</button>
                 </div>
-                <div class="product-card" data-name="Extra 2">
-                    <img src="extra2.jpg" alt="Extra 2">
-                    <h3>Extra 2</h3>
-                    <p>$7.00</p>
-                    <button class="add-to-cart" data-image="extra2.jpg" data-name="Extra 2" data-price="7.00">Add to Cart</button>
+
+                
+                <div class="product-card" data-name="Extra Spag & Gari">
+                    <img src="extra 2.jpg" alt="Extra 2">
+                    <h3>Extra Spag & Gari</h3>
+                    <p>AED5.00</p>
+                    <button class="add-to-cart" data-image="extra 2.jpg" data-name="Extra Spag & Gari" data-price="5.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Malt">
+                    <img src="extra 3.jpg" alt="Extra 2">
+                    <h3>Malt</h3>
+                    <p>AED5.00</p>
+                    <button class="add-to-cart" data-image="extra 3.jpg" data-name="Malt" data-price="5.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Meat Pie">
+                    <img src="extra 4.jpg" alt="Extra 2">
+                    <h3>Meat Pie</h3>
+                    <p>AED5.00</p>
+                    <button class="add-to-cart" data-image="extra 4.jpg" data-name="Meat Pie" data-price="5.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Sobolo">
+                    <img src="extra 5.jpg" alt="Extra 2">
+                    <h3>Sobolo</h3>
+                    <p>AED5.00</p>
+                    <button class="add-to-cart" data-image="extra 5.jpg" data-name="Sobolo" data-price="5.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Ice Kenkey">
+                    <img src="extra 6.jpg" alt="Extra 2">
+                    <h3>Ice Kenkey</h3>
+                    <p>AED10.00</p>
+                    <button class="add-to-cart" data-image="extra 6.jpg" data-name="Ice Kenkey" data-price="10.00">Add to Cart</button>
+                </div>
+
+                <div class="product-card" data-name="Brukina">
+                    <img src="extra 7.jpg" alt="Extra 2">
+                    <h3>Brukina</h3>
+                    <p>AED10.00</p>
+                    <button class="add-to-cart" data-image="extra 7.jpg" data-name="Brukina" data-price="10.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Mirinda">
+                    <img src="extra 8.jpg" alt="Extra 2">
+                    <h3>Mirinda</h3>
+                    <p>AED4.00</p>
+                    <button class="add-to-cart" data-image="extra 8.jpg" data-name="Mirinda" data-price="4.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Pepsi">
+                    <img src="extra 9.jpg" alt="Extra 2">
+                    <h3>Pepsi</h3>
+                    <p>AED4.00</p>
+                    <button class="add-to-cart" data-image="extra 9.jpg" data-name="Pepsi" data-price="4.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Coca Cola">
+                    <img src="extra 10.jpg" alt="Extra 2">
+                    <h3>Coca Cola</h3>
+                    <p>AED4.00</p>
+                    <button class="add-to-cart" data-image="extra 10.jpg" data-name="Coca Cola" data-price="4.00">Add to Cart</button>
+                </div>
+
+                
+                <div class="product-card" data-name="Schweppes">
+                    <img src="extra 11.jpg" alt="Extra 2">
+                    <h3>Schweppes</h3>
+                    <p>AED4.00</p>
+                    <button class="add-to-cart" data-image="extra 11.jpg" data-name="Schweppes" data-price="4.00">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -723,6 +1163,9 @@
         <div class="icon" onclick="showFoods()">Foods</div>
         <div class="icon" onclick="showExtras()">Extras</div>
     </div>
+
+    <!-- Sign Up Required Button -->
+    <button id="signup-required-button" style="display: none;" onclick="openSignupModal()">Sign Up Required</button>
 
     <!-- Modal for Product Details -->
     <div id="popup-modal" class="modal">
@@ -751,6 +1194,7 @@
             <h2>Your Cart</h2>
             <ul id="cart-items"></ul>
             <p id="cart-total"></p>
+            <textarea id="description" placeholder="Add any special instructions or notes for your order..."></textarea>
             <button id="proceed-button">Proceed to Checkout</button>
         </div>
     </div>
@@ -779,6 +1223,12 @@
             <p><strong>Phone:</strong> <span id="profile-phone"></span></p>
             <p><strong>Location:</strong> <span id="profile-location"></span></p>
             <p><strong>Landmark:</strong> <span id="profile-landmark"></span></p>
+            <div id="order-history">
+                <h3>Order History</h3>
+                <ul id="order-history-list"></ul>
+            </div>
+            <!-- Added Sign Up/Logout Button Here -->
+            <button id="profile-auth-button"></button>
         </div>
     </div>
 
@@ -810,6 +1260,16 @@
         </div>
     </div>
 
+    <!-- Custom Alert Modal -->
+    <div id="custom-alert-modal" class="modal">
+        <div class="modal-content custom-alert-content">
+            <span class="close">&times;</span>
+            <h2 id="custom-alert-title"></h2>
+            <p id="custom-alert-message"></p>
+            <button onclick="closeCustomAlert()">OK</button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="nav-icons">
@@ -829,6 +1289,7 @@
         const successModal = document.getElementById("success-modal");
         const foodsModal = document.getElementById("foods-modal");
         const extrasModal = document.getElementById("extras-modal");
+        const customAlertModal = document.getElementById("custom-alert-modal");
         const closeButtons = document.querySelectorAll(".close");
         const quantitySelect = document.getElementById("quantity");
         const totalPriceDisplay = document.getElementById("total-price");
@@ -838,7 +1299,6 @@
         const cartItemsList = document.getElementById("cart-items");
         const cartTotal = document.getElementById("cart-total");
         const proceedButton = document.getElementById("proceed-button");
-        const signupLink = document.getElementById("signup-link");
         const signupForm = document.getElementById("signup-form");
         const profileIcon = document.getElementById("profile-icon");
         const searchIcon = document.getElementById("search-icon");
@@ -847,8 +1307,56 @@
         const searchInput = document.getElementById("search-input");
         const searchResults = document.getElementById("search-results");
         const additionalIcons = document.getElementById("additional-icons");
+        const orderHistoryList = document.getElementById("order-history-list");
+        const descriptionInput = document.getElementById("description");
+        const customAlertTitle = document.getElementById("custom-alert-title");
+        const customAlertMessage = document.getElementById("custom-alert-message");
+        const profileAuthButton = document.getElementById("profile-auth-button");
+        const signupRequiredButton = document.getElementById("signup-required-button");
         let selectedItem = null;
         let cart = [];
+        let orderHistory = [];
+
+        // Function to show custom alert
+        function showCustomAlert(title, message) {
+            customAlertTitle.textContent = title;
+            customAlertMessage.textContent = message;
+            customAlertModal.style.display = "flex";
+        }
+
+        // Function to close custom alert
+        function closeCustomAlert() {
+            customAlertModal.style.display = "none";
+        }
+
+        // Function to update the auth button in the profile modal
+        function updateAuthButton() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user) {
+                profileAuthButton.textContent = "Logout";
+                profileAuthButton.onclick = logoutUser;
+                signupRequiredButton.style.display = "none"; // Hide the sign-up required button
+            } else {
+                profileAuthButton.textContent = "Sign Up";
+                profileAuthButton.onclick = openSignupModal;
+                signupRequiredButton.style.display = "block"; // Show the sign-up required button
+            }
+        }
+
+        // Function to open the sign-up modal
+        function openSignupModal() {
+            signupModal.style.display = "flex";
+        }
+
+        // Function to logout the user
+        function logoutUser() {
+            localStorage.removeItem("user");
+            showCustomAlert("Logged Out", "You have been logged out.");
+            updateAuthButton();
+        }
+
+        // Initialize auth button based on user state
+        updateAuthButton();
 
         // Toggle Additional Icons
         function toggleAdditionalIcons() {
@@ -907,7 +1415,7 @@
                 };
                 document.getElementById("modal-image").src = selectedItem.image;
                 document.getElementById("modal-name").textContent = selectedItem.name;
-                document.getElementById("modal-price").textContent = `Price: $${selectedItem.price}`;
+                document.getElementById("modal-price").textContent = `Price: AED${selectedItem.price}`;
                 updateTotalPrice();
                 modal.style.display = "flex";
             });
@@ -919,7 +1427,7 @@
         function updateTotalPrice() {
             const quantity = parseInt(quantitySelect.value);
             const totalPrice = selectedItem.price * quantity;
-            totalPriceDisplay.textContent = `Total: $${totalPrice.toFixed(2)}`;
+            totalPriceDisplay.textContent = `Total: AED${totalPrice.toFixed(2)}`;
         }
 
         // Add item to cart when "Buy" is clicked
@@ -944,11 +1452,6 @@
             cartModal.style.display = "flex";
         });
 
-        // Open sign-up modal when sign-up link is clicked
-        signupLink.addEventListener("click", () => {
-            signupModal.style.display = "flex";
-        });
-
         // Open profile modal when profile icon is clicked
         profileIcon.addEventListener("click", () => {
             const user = JSON.parse(localStorage.getItem("user"));
@@ -957,9 +1460,10 @@
                 document.getElementById("profile-phone").textContent = user.phone;
                 document.getElementById("profile-location").textContent = user.location;
                 document.getElementById("profile-landmark").textContent = user.landmark;
+                updateOrderHistory();
                 profileModal.style.display = "flex";
             } else {
-                alert("Please sign up first.");
+                showCustomAlert("Sign Up Required", "Please sign up first.");
             }
         });
 
@@ -979,6 +1483,7 @@
                 successModal.style.display = "none";
                 foodsModal.style.display = "none";
                 extrasModal.style.display = "none";
+                customAlertModal.style.display = "none";
             });
         });
 
@@ -991,12 +1496,15 @@
         function updateCartItems() {
             cartItemsList.innerHTML = cart
                 .map(
-                    (item) => `
-                    <li>
+                    (item, index) => `
+                    <li class="cart-item">
                         <img src="${item.image}" alt="Cart Item">
-                        <span>${item.name}</span>
-                        <span>Qty: ${item.quantity}</span>
-                        <span>$${item.total.toFixed(2)}</span>
+                        <div class="cart-item-details">
+                            <span>${item.name}</span>
+                            <span>Qty: ${item.quantity}</span>
+                            <span>AED${item.total.toFixed(2)}</span>
+                        </div>
+                        <span class="cart-item-remove" onclick="removeCartItem(${index})">&times;</span>
                     </li>
                 `
                 )
@@ -1004,10 +1512,17 @@
             updateCartTotal();
         }
 
+        // Remove item from cart
+        function removeCartItem(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            updateCartItems();
+        }
+
         // Calculate and display the total price of all items in the cart
         function updateCartTotal() {
             const total = cart.reduce((sum, item) => sum + item.total, 0);
-            cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+            cartTotal.textContent = `Total: AED${total.toFixed(2)}`;
         }
 
         // Save user information locally and close sign-up modal
@@ -1020,8 +1535,9 @@
                 landmark: document.getElementById("landmark").value,
             };
             localStorage.setItem("user", JSON.stringify(user));
-            alert("Sign up successful!");
+            showCustomAlert("Sign Up Successful", "Thank you for signing up!");
             signupModal.style.display = "none";
+            updateAuthButton(); // Update the auth button after sign-up
         });
 
         // Search functionality
@@ -1044,7 +1560,7 @@
             });
 
             if (!found) {
-                alert("No matching products found.");
+                showCustomAlert("No Results", "No matching products found.");
             }
         });
 
@@ -1057,7 +1573,7 @@
         proceedButton.addEventListener("click", () => {
             const user = JSON.parse(localStorage.getItem("user"));
             if (!user) {
-                alert("Please sign up first.");
+                showCustomAlert("Sign Up Required", "Please sign up first.");
                 return;
             }
 
@@ -1065,12 +1581,22 @@
             const cartDetails = cart
                 .map(
                     (item) => `
-                    ${item.name} - Qty: ${item.quantity} - Price: $${item.total.toFixed(2)}
+                    ${item.name} - Qty: ${item.quantity} - Price: AED${item.total.toFixed(2)}
                 `
                 )
                 .join("\n");
 
             const totalPrice = cart.reduce((sum, item) => sum + item.total, 0);
+
+            // Save order to order history
+            const order = {
+                date: new Date().toLocaleString(),
+                items: cartDetails,
+                total: totalPrice,
+                description: descriptionInput.value, // Include description in the order
+            };
+            orderHistory.push(order);
+            localStorage.setItem("orderHistory", JSON.stringify(orderHistory));
 
             // Prepare form data
             const formData = new FormData();
@@ -1079,7 +1605,8 @@
             formData.append("location", user.location);
             formData.append("landmark", user.landmark);
             formData.append("cart_details", cartDetails);
-            formData.append("total_price", `$${totalPrice.toFixed(2)}`);
+            formData.append("total_price", `AED${totalPrice.toFixed(2)}`);
+            formData.append("description", descriptionInput.value); // Include description in form data
 
             // Log form data for debugging
             for (let [key, value] of formData.entries()) {
@@ -1087,7 +1614,7 @@
             }
 
             // Send data to Formspree
-            fetch("https://formspree.io/f/xoveakdz", { // Updated Formspree endpoint
+            fetch("https://formspree.io/f/mzzedlrr", { // Updated Formspree endpoint
                 method: "POST",
                 body: formData,
                 headers: {
@@ -1110,14 +1637,31 @@
                             successModal.style.display = "none";
                         }, 5000);
                     } else {
-                        throw new Error("Failed to send order details.");
+                        throw new Error("Failed, Check Internet Connection.");
                     }
                 })
                 .catch((error) => {
                     console.error("Formspree Error:", error);
-                    alert("Failed to send order details. Please try again.");
+                    showCustomAlert("Error", "Failed to send order details. Please try again.");
                 });
         });
+
+        // Update order history in the profile modal
+        function updateOrderHistory() {
+            const orderHistory = JSON.parse(localStorage.getItem("orderHistory")) || [];
+            orderHistoryList.innerHTML = orderHistory
+                .map(
+                    (order, index) => `
+                    <li>
+                        <p><strong>Order ${index + 1}:</strong> ${order.date}</p>
+                        <p>${order.items}</p>
+                        <p><strong>Description:</strong> ${order.description || "No description provided"}</p>
+                        <p><strong>Total:</strong> AED${order.total.toFixed(2)}</p>
+                    </li>
+                `
+                )
+                .join("");
+        }
     </script>
 </body>
 </html>
